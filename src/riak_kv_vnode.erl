@@ -663,7 +663,7 @@ reap(Preflist, {Bucket, Key}, DeleteHash) ->
 %% Issue a put for the object to the preflist, expecting a reply
 %% to an FSM.
 put(Preflist, BKey, Obj, ReqId, StartTime, Options) when is_integer(StartTime) ->
-    ?LOG_INFO("Put/6 triggered, hi.....",[]),
+    ?LOG_INFO("Put/6 triggered with args ~p, ~p, ~p, ~p, ~p, ~p", [Preflist, BKey, Obj, ReqId, StartTime, Options]),
     put(Preflist, BKey, Obj, ReqId, StartTime, Options, {fsm, undefined, self()}).
 
 put(Preflist, BKey, Obj, ReqId, StartTime, Options, Sender)
