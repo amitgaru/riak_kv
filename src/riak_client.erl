@@ -54,6 +54,8 @@
 -export([remove_node_from_coverage/0, reset_node_for_coverage/0]).
 -export([repair_node/0]).
 
+-include_lib("kernel/include/logger.hrl").
+
 -compile({no_auto_import,[put/2]}).
 %% @type default_timeout() = 60000
 -define(DEFAULT_TIMEOUT, 60000).
@@ -87,6 +89,7 @@ new(Node, ClientId) ->
 %%      R-value for the nodes have responded with a value or error.
 %% @equiv get(Bucket, Key, R, default_timeout())
 get(Bucket, Key, {?MODULE, [_Node, _ClientId]}=THIS) ->
+    ?LOG_INFO("riak_client:get/3 triggered with args ~p, ~p, ~p", [Bucket, Key, THIS]),
     get(Bucket, Key, [], THIS).
 
 normal_get(Bucket, Key, Options, {?MODULE, [Node, _ClientId]}) ->
@@ -327,6 +330,7 @@ repl_push(RObj, IsDeleted, _Opts, {?MODULE, [Node, _ClientId]}) ->
 %% @doc Fetch the object at Bucket/Key.  Return a value as soon as R-value for the nodes
 %%      have responded with a value or error.
 get(Bucket, Key, Options, {?MODULE, [Node, _ClientId]}=THIS) when is_list(Options) ->
+    ?LOG_INFO("riak_client:get/4 when Options is list triggered with args ~p, ~p, ~p, ~p", [Bucket, Key, Options, THIS]),
     case consistent_object(Node, Bucket) of
         true ->
             consistent_get(Bucket, Key, Options, THIS);
@@ -347,6 +351,7 @@ get(Bucket, Key, Options, {?MODULE, [Node, _ClientId]}=THIS) when is_list(Option
 %%      nodes have responded with a value or error.
 %% @equiv get(Bucket, Key, R, default_timeout())
 get(Bucket, Key, R, {?MODULE, [_Node, _ClientId]}=THIS) ->
+    ?LOG_INFO("riak_client:get/4 triggered with args ~p, ~p, ~p, ~p", [Bucket, Key, R, THIS]),
     get(Bucket, Key, [{r, R}], THIS).
 
 %% @spec get(riak_object:bucket(), riak_object:key(), R :: integer(),
@@ -364,6 +369,7 @@ get(Bucket, Key, R, Timeout, {?MODULE, [_Node, _ClientId]}=THIS) when
                                   is_binary(Key),
                                   (is_atom(R) or is_integer(R)),
                                   is_integer(Timeout) ->
+    ?LOG_INFO("riak_client:get/5 triggered with args ~p, ~p, ~p, ~p, ~p", [Bucket, Key, R, Timeout, THIS]),
     get(Bucket, Key, [{r, R}, {timeout, Timeout}], THIS).
 
 
