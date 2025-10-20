@@ -257,6 +257,7 @@ queue_fetch(timeout, StateData) ->
 prepare(timeout, StateData=#state{bkey=BKey={Bucket,_Key},
                                   options=Options,
                                   trace=Trace}) ->
+    ?LOG_INFO("riak_kv_get_fsm:prepare/2 triggered with args ~p", [StateData]),
     ?DTRACE(Trace, ?C_GET_FSM_PREPARE, [], ["prepare"]),
     {ok, DefaultProps} = application:get_env(riak_core,
                                              default_bucket_props),
@@ -314,6 +315,7 @@ validate(timeout, StateData=#state{from = {raw, ReqId, _Pid}, options = Options,
                                    n = N, bucket_props = BucketProps, preflist2 = PL2,
                                    trace=Trace,
                                    expected_fetchclock = ExpClock}) ->
+    ?LOG_INFO("riak_gv_get_fsm:validate/2 triggered with args ~p", [StateData]),
     ?DTRACE(Trace, ?C_GET_FSM_VALIDATE, [], ["validate"]),
     AppEnvTimeout = app_helper:get_env(riak_kv, timeout),
     Timeout = case AppEnvTimeout of
@@ -370,6 +372,7 @@ execute(timeout, StateData0=#state{timeout=Timeout,req_id=ReqId,
                                    get_core = GetCore,
                                    request_type = RequestType,
                                    override_vnodes = OverVnodes}) ->
+    ?LOG_INFO("riak_gv_get_fsm:execute/2 triggered with args ~p", [StateData]),
     Preflist = [IndexNode || {IndexNode, _Type} <- Preflist2],
     TRef = schedule_timeout(Timeout),
     case Trace of
@@ -413,6 +416,7 @@ execute(timeout, StateData0=#state{timeout=Timeout,req_id=ReqId,
 %% @private
 waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
                     StateData = #state{get_core = GetCore, trace = Trace}) ->
+    ?LOG_INFO("riak_gv_get_fsm:waiting_vnode_r/2 triggered with args ~p, ~p", [{r, VnodeResult, Idx, _ReqId}, StateData]),
     case Trace of
         true ->
             ShortCode = riak_kv_get_core:result_shortcode(VnodeResult),
