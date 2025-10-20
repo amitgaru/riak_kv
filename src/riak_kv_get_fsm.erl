@@ -119,6 +119,7 @@ start_link(ReqId,Bucket,Key,R,Timeout,From) ->
             binary()|riak_kv_replrtq_src:queue_name(),
             options()) -> {ok, pid()} | {error, any()}.
 start(From, Bucket, Key, GetOptions) ->
+    ?LOG_INFO("riak_kv_get_fsm:start/4 triggered with args ~p, ~p, ~p, ~p", [From, Bucket, Key, GetOptions]),
     Args = [From, Bucket, Key, GetOptions],
     case sidejob_supervisor:start_child(riak_kv_get_fsm_sj,
                                         gen_fsm, start_link,
@@ -165,6 +166,7 @@ test_link(From, Bucket, Key, GetOptions, StateProps) ->
 
 %% @private
 init([From, queue_name, QueueName, Options0]) ->
+    ?LOG_INFO("riak_kv_get_fsm:init/4 triggered with args ~p, queue_name: ~p, ~p", [From, QueueName, Options0]),
     StartNow = os:timestamp(),
     Options = proplists:unfold(Options0),
     StateData = #state{from = From,
@@ -175,6 +177,7 @@ init([From, queue_name, QueueName, Options0]) ->
                        return_tombstone = true},
     {ok, queue_fetch, StateData, 0};
 init([From, Bucket, Key, Options0]) ->
+    ?LOG_INFO("riak_kv_get_fsm:init/4 triggered with args ~p, ~p, ~p, ~p", [From, Bucket, Key, Options0]),
     StartNow = os:timestamp(),
     Options = proplists:unfold(Options0),
     StateData = #state{from = From,
@@ -193,6 +196,7 @@ init([From, Bucket, Key, Options0]) ->
     {ok, prepare, StateData, 0};
 init({test, Args, StateProps}) ->
     %% Call normal init
+    ?LOG_INFO("riak_kv_get_fsm:init/3 triggered with args ~p, ~p", [Args, StateProps]),
     {ok, prepare, StateData, 0} = init(Args),
 
     %% Then tweak the state record with entries provided by StateProps

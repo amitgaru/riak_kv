@@ -628,6 +628,9 @@ put(RObj, W, DW, Timeout, Options, {?MODULE, [_Node, _ClientId]} = THIS) ->
     put(RObj, [{w, W}, {dw, DW}, {timeout, Timeout} | Options], THIS).
 
 maybe_normal_put(RObj, Options, {?MODULE, [Node, _ClientId]} = THIS) when is_list(Options) ->
+    ?LOG_INFO("riak_client:maybe_normal_put/3 triggered with args ~p, ~p, ~p", [
+        RObj, Options, THIS
+    ]),
     case write_once(Node, riak_object:bucket(RObj)) of
         true ->
             write_once_put(Node, RObj, Options, THIS);
