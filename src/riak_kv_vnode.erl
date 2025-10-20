@@ -620,6 +620,7 @@ tictacexchange_complete(Vnode, StartTime, ExchangeResult) ->
 get(Preflist, BKey, ReqId) ->
     %% Assuming this function is called from a FSM process
     %% so self() == FSM pid
+    ?LOG_INFO("riak_kv_vnode:get/3 triggered with args ~p, ~p, ~p", [Preflist, BKey, ReqId]),
     get(Preflist, BKey, ReqId, {fsm, undefined, self()}).
 
 get(Preflist, BKey, ReqId, Sender) ->
@@ -663,7 +664,7 @@ reap(Preflist, {Bucket, Key}, DeleteHash) ->
 %% Issue a put for the object to the preflist, expecting a reply
 %% to an FSM.
 put(Preflist, BKey, Obj, ReqId, StartTime, Options) when is_integer(StartTime) ->
-    ?LOG_INFO("Put/6 triggered with args ~p, ~p, ~p, ~p, ~p, ~p", [Preflist, BKey, Obj, ReqId, StartTime, Options]),
+    ?LOG_INFO("riak_kv_vnode:put/6 triggered with args ~p, ~p, ~p, ~p, ~p, ~p", [Preflist, BKey, Obj, ReqId, StartTime, Options]),
     put(Preflist, BKey, Obj, ReqId, StartTime, Options, {fsm, undefined, self()}).
 
 put(Preflist, BKey, Obj, ReqId, StartTime, Options, Sender)
