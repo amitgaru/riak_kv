@@ -372,7 +372,7 @@ execute(timeout, StateData0=#state{timeout=Timeout,req_id=ReqId,
                                    get_core = GetCore,
                                    request_type = RequestType,
                                    override_vnodes = OverVnodes}) ->
-    ?LOG_INFO("riak_gv_get_fsm:execute/2 triggered with args ~p", [StateData]),
+    ?LOG_INFO("riak_gv_get_fsm:execute/2 triggered with args ~p", [StateData0]),
     Preflist = [IndexNode || {IndexNode, _Type} <- Preflist2],
     TRef = schedule_timeout(Timeout),
     case Trace of
