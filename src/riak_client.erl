@@ -382,7 +382,9 @@ get(Bucket, Key, R, Timeout, {?MODULE, [_Node, _ClientId]}=THIS) when
 %%      Return as soon as the default W value number of nodes for this bucket
 %%      nodes have received the request.
 %% @equiv put(RObj, [])
-put(RObj, {?MODULE, [_Node, _ClientId]}=THIS) -> put(RObj, [], THIS).
+put(RObj, {?MODULE, [_Node, _ClientId]}=THIS) -> 
+    ?LOG_INFO("riak_client:put/2 triggered with args ~p, ~p", [RObj, THIS]),
+    put(RObj, [], THIS).
 
 
 normal_put(RObj, Options, {?MODULE, [Node, ClientId]}) ->
@@ -468,6 +470,7 @@ consistent_put_type(RObj, Options) ->
 %%       {error, Err :: term(), details()}
 %% @doc Store RObj in the cluster.
 put(RObj, Options, {?MODULE, [Node, _ClientId]}=THIS) when is_list(Options) ->
+    ?LOG_INFO("riak_client:put/3 triggered when Options is list with args ~p, ~p, ~p", [RObj, Options, THIS]),
     case consistent_object(Node, riak_object:bucket(RObj)) of
         true ->
             consistent_put(RObj, Options, THIS);
@@ -485,7 +488,9 @@ put(RObj, Options, {?MODULE, [Node, _ClientId]}=THIS) when is_list(Options) ->
 %% @doc Store RObj in the cluster.
 %%      Return as soon as at least W nodes have received the request.
 %% @equiv put(RObj, [{w, W}, {dw, W}])
-put(RObj, W, {?MODULE, [_Node, _ClientId]}=THIS) -> put(RObj, [{w, W}, {dw, W}], THIS).
+put(RObj, W, {?MODULE, [_Node, _ClientId]}=THIS) -> 
+    ?LOG_INFO("riak_client:put/3 triggered with args ~p, ~p, ~p", [RObj, W, THIS]),
+    put(RObj, [{w, W}, {dw, W}], THIS).
 
 %% @spec put(RObj::riak_object:riak_object(),W :: integer(),RW :: integer(), riak_client()) ->
 %%        ok |
@@ -496,7 +501,9 @@ put(RObj, W, {?MODULE, [_Node, _ClientId]}=THIS) -> put(RObj, [{w, W}, {dw, W}],
 %%      Return as soon as at least W nodes have received the request, and
 %%      at least DW nodes have stored it in their storage backend.
 %% @equiv put(Robj, W, DW, default_timeout())
-put(RObj, W, DW, {?MODULE, [_Node, _ClientId]}=THIS) -> put(RObj, [{w, W}, {dw, DW}], THIS).
+put(RObj, W, DW, {?MODULE, [_Node, _ClientId]}=THIS) -> 
+    ?LOG_INFO("riak_client:put/4 triggered with args ~p, ~p, ~p, ~p", [RObj, W, DW, THIS]),
+    put(RObj, [{w, W}, {dw, DW}], THIS).
 
 %% @spec put(RObj::riak_object:riak_object(), W :: integer(), RW :: integer(),
 %%           TimeoutMillisecs :: integer(), riak_client()) ->
@@ -509,6 +516,7 @@ put(RObj, W, DW, {?MODULE, [_Node, _ClientId]}=THIS) -> put(RObj, [{w, W}, {dw, 
 %%      at least DW nodes have stored it in their storage backend, or
 %%      TimeoutMillisecs passes.
 put(RObj, W, DW, Timeout, {?MODULE, [_Node, _ClientId]}=THIS) ->
+    ?LOG_INFO("riak_client:put/5 triggered with args ~p, ~p, ~p, ~p, ~p", [RObj, W, DW, Timeout, THIS]),
     put(RObj,  [{w, W}, {dw, DW}, {timeout, Timeout}], THIS).
 
 %% @spec put(RObj::riak_object:riak_object(), W :: integer(), RW :: integer(),
@@ -522,6 +530,7 @@ put(RObj, W, DW, Timeout, {?MODULE, [_Node, _ClientId]}=THIS) ->
 %%      at least DW nodes have stored it in their storage backend, or
 %%      TimeoutMillisecs passes.
 put(RObj, W, DW, Timeout, Options, {?MODULE, [_Node, _ClientId]}=THIS) ->
+    ?LOG_INFO("riak_client:put/6 triggered with args ~p, ~p, ~p, ~p, ~p, ~p", [RObj, W, DW, Timeout, Options, THIS]),
     put(RObj, [{w, W}, {dw, DW}, {timeout, Timeout} | Options], THIS).
 
 maybe_normal_put(RObj, Options, {?MODULE, [Node, _ClientId]}=THIS) when is_list(Options) ->
