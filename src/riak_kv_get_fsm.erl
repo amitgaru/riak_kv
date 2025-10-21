@@ -479,6 +479,7 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
                 StateData#state{get_core = UpdGetCore}}
     end;
 waiting_vnode_r(request_timeout, StateData = #state{trace=Trace}) ->
+    ?LOG_INFO("riak_kv_get_fsm:waiting_vnode_r/2 request_timeout triggered with args ~p", [StateData]),
     ?DTRACE(Trace, ?C_GET_FSM_WAITING_R_TIMEOUT, [-2],
             ["waiting_vnode_r", "timeout"]),
     S2 = client_reply({error,timeout}, StateData),
@@ -573,6 +574,7 @@ count_nodes(Preflist) ->
 
 
 find_node(Idx, Preflist) ->
+    ?LOG_INFO("riak_kv_get_fsm:find_node/2 triggered with args ~p, ~p", [Idx, Preflist]),
     {Idx, Node} =
         lists:keyfind(Idx,
                         1,
@@ -784,6 +786,7 @@ client_reply(Reply0, StateData = #state{from = {raw, ReqId, Pid},
                                        options = Options,
                                        timing = Timing,
                                        trace = Trace}) ->
+    ?LOG_INFO("riak_kv_get_fsm: client_reply/2 triggered with args ~p, ~p", [Reply0, StateData]),
     NewTiming = riak_kv_fsm_timing:add_timing(reply, Timing),
 
     % For the fetch style get, the underlying tombstone object needs to be
