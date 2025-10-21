@@ -217,6 +217,7 @@
 %% @doc Initialize this resource.  This function extracts the
 %%      'prefix' and 'riak' properties from the dispatch args.
 init(Props) ->
+    ?LOG_INFO("riak_kv_wm_object:init/1 triggered with args ~p", [Props]),
     {ok, #ctx{api_version=proplists:get_value(api_version, Props),
               prefix=proplists:get_value(prefix, Props),
               riak=proplists:get_value(riak, Props),
@@ -230,6 +231,7 @@ init(Props) ->
 %%      bindings from the dispatch, as well as any vtag
 %%      query parameter.
 service_available(RD, Ctx0=#ctx{riak=RiakProps}) ->
+    ?LOG_INFO("riak_kv_wm_object:service_available/2 triggered with args ~p, ~p", [RD, Ctx0]),
     Ctx = ensure_bucket_type(RD, Ctx0),
     ClientID = riak_kv_wm_utils:get_client_id(RD),
     case riak_kv_wm_utils:get_riak_client(RiakProps, ClientID) of
@@ -267,6 +269,7 @@ service_available(RD, Ctx0=#ctx{riak=RiakProps}) ->
     end.
 
 is_authorized(ReqData, Ctx) ->
+    ?LOG_INFO("riak_kv_wm_object:is_authorized/2 triggered with args ~p, ~p", [ReqData, Ctx]),
     case riak_api_web_security:is_authorized(ReqData) of
         false ->
             {"Basic realm=\"Riak\"", ReqData, Ctx};
@@ -639,6 +642,7 @@ content_types_provided(RD, Ctx=#ctx{method=Method})
             when Method =:= 'DELETE' ->
     {[{"text/html", to_html}], RD, Ctx};
 content_types_provided(RD, Ctx0) ->
+    ?LOG_INFO("riak_kv_wm_object:content_types_provided/2 triggered with args ~p, ~p", [RD, Ctx0]),
     DocCtx = ensure_doc(Ctx0),
     %% we can assume DocCtx#ctx.doc is {ok,Doc} because of malformed_request
     case select_doc(DocCtx) of
@@ -756,6 +760,7 @@ content_types_accepted(RD, Ctx) ->
 %%      and either no vtag query parameter was specified, or the value of the
 %%      vtag param matches the vtag of some value of the Riak object.
 resource_exists(RD, Ctx0) ->
+    ?LOG_INFO("riak_kv_wm_object:resource_exists/2 triggered with args ~p, ~p", [RD, Ctx0]),
     Method = Ctx0#ctx.method,
     ToFetch =
         case Method of

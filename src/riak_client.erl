@@ -1351,6 +1351,7 @@ mk_reqid() ->
 
 %% @private
 wait_for_reqid(ReqId, Timeout) ->
+    ?LOG_INFO("riak_client:wait_for_reqid/2 triggered with args ~p, ~p", [ReqId, Timeout]),
     receive
         {ReqId, {error, overload} = Response} ->
             case app_helper:get_env(riak_kv, overload_backoff, undefined) of
