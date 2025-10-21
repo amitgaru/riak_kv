@@ -524,6 +524,7 @@ handle_info(_Info, _StateName, StateData) ->
 
 %% @private
 terminate(Reason, _StateName, _State) ->
+    ?LOG_INFO("riak_kv_get_fsm:terminate/3 triggered with args ~p", [Reason]),
     Reason.
 
 %% @private
@@ -606,12 +607,14 @@ new_state_timeout(StateName, StateData) ->
     {next_state, StateName, StateData, 0}.
 
 maybe_finalize(StateData=#state{get_core = GetCore}) ->
+    ?LOG_INFO("riak_kv_get_fsm:maybe_finalize/1 triggered with args ~p", [StateData]),
     case riak_kv_get_core:has_all_results(GetCore) of
         true -> finalize(StateData);
         false -> {next_state,waiting_read_repair,StateData}
     end.
 
 finalize(StateData=#state{get_core = GetCore, trace = Trace}) ->
+    ?LOG_INFO("riak_kv_get_fsm:finalize/1 triggered with args ~p", [StateData]),
     {Action, UpdGetCore} = riak_kv_get_core:final_action(GetCore),
     UpdStateData = StateData#state{get_core = UpdGetCore},
 

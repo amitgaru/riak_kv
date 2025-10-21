@@ -624,6 +624,7 @@ get(Preflist, BKey, ReqId) ->
     get(Preflist, BKey, ReqId, {fsm, undefined, self()}).
 
 get(Preflist, BKey, ReqId, Sender) ->
+    ?LOG_INFO("riak_kv_vnode:get/4 triggered with args ~p, ~p, ~p, ~p", [Preflist, BKey, ReqId, Sender]),
     Req = riak_kv_requests:new_get_request(sanitize_bkey(BKey), ReqId),
     riak_core_vnode_master:command(Preflist,
                                    Req,
@@ -633,9 +634,11 @@ get(Preflist, BKey, ReqId, Sender) ->
 head(Preflist, BKey, ReqId) ->
     %% Assuming this function is called from a FSM process
     %% so self() == FSM pid
+    ?LOG_INFO("riak_kv_vnode:head/3 triggered with args ~p, ~p, ~p", [Preflist, BKey, ReqId]),
     head(Preflist, BKey, ReqId, {fsm, undefined, self()}).
 
 head(Preflist, BKey, ReqId, Sender) ->
+    ?LOG_INFO("riak_kv_vnode:head/4 triggered with args ~p, ~p, ~p, ~p", [Preflist, BKey, ReqId, Sender]),
     Req = riak_kv_requests:new_head_request(sanitize_bkey(BKey), ReqId),
     riak_core_vnode_master:command(Preflist,
                                    Req,
@@ -643,6 +646,7 @@ head(Preflist, BKey, ReqId, Sender) ->
                                    riak_kv_vnode_master).
 
 del(Preflist, BKey, ReqId) ->
+    ?LOG_INFO("riak_kv_vnode:del/3 triggered with args ~p, ~p, ~p", [Preflist, BKey, ReqId]),
     Req = riak_kv_requests:new_delete_request(sanitize_bkey(BKey), ReqId),
     riak_core_vnode_master:command(Preflist, Req, riak_kv_vnode_master).
 
@@ -652,6 +656,7 @@ del(Preflist, BKey, ReqId) ->
             {riak_object:bucket(), riak_object:key()},
             non_neg_integer()) -> ok.
 reap(Preflist, {Bucket, Key}, DeleteHash) ->
+    ?LOG_INFO("riak_kv_vnode:reap/3 triggered with args ~p, ~p, ~p", [Preflist, {Bucket, Key}, DeleteHash]),
     Req = riak_kv_requests:new_reap_request({Bucket, Key}, DeleteHash),
     [{Idx, Node}|Rest] = Preflist,
     %% For the head of the preflist we do this sync, to regulate the pace of
@@ -669,6 +674,7 @@ put(Preflist, BKey, Obj, ReqId, StartTime, Options) when is_integer(StartTime) -
 
 put(Preflist, BKey, Obj, ReqId, StartTime, Options, Sender)
   when is_integer(StartTime) ->
+    ?LOG_INFO("riak_kv_vnode:put/7 triggered with args ~p, ~p, ~p, ~p, ~p, ~p, ~p", [Preflist, BKey, Obj, ReqId, StartTime, Options, Sender]),
     Req = riak_kv_requests:new_put_request(
         sanitize_bkey(BKey), Obj, ReqId, StartTime, Options),
     riak_core_vnode_master:command(Preflist,
@@ -677,9 +683,11 @@ put(Preflist, BKey, Obj, ReqId, StartTime, Options, Sender)
                                    riak_kv_vnode_master).
 
 local_put(Index, Obj) ->
+    ?LOG_INFO("riak_kv_vnode:local_put/2 triggered with args ~p, ~p", [Index, Obj]),
     local_put(Index, Obj, []).
 
 local_put(Index, Obj, Options) ->
+    ?LOG_INFO("riak_kv_vnode:local_put/3 triggered with args ~p, ~p, ~p", [Index, Obj, Options]),
     BKey = {riak_object:bucket(Obj), riak_object:key(Obj)},
     Ref = make_ref(),
     ReqId = erlang:phash2({self(), os:timestamp()}),
@@ -692,6 +700,7 @@ local_put(Index, Obj, Options) ->
     end.
 
 local_get(Index, BKey) ->
+    ?LOG_INFO("riak_kv_vnode:local_get/2 triggered with args ~p, ~p", [Index, BKey]),
     Ref = make_ref(),
     ReqId = erlang:phash2({self(), os:timestamp()}),
     Sender = {raw, Ref, self()},

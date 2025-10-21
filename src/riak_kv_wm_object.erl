@@ -195,6 +195,8 @@
 -include_lib("webmachine/include/webmachine.hrl").
 -include("riak_kv_wm_raw.hrl").
 
+-include_lib("kernel/include/logger.hrl").
+
 -type context() :: #ctx{}.
 -type request_data() :: #wm_reqdata{}.
 
@@ -1156,6 +1158,7 @@ ensure_doc(Ctx=#ctx{doc=undefined, key=undefined}) ->
     Ctx#ctx{doc={error, notfound}};
 ensure_doc(Ctx=#ctx{doc=undefined, bucket_type=T, bucket=B, key=K, client=C,
                     basic_quorum=Quorum, notfound_ok=NotFoundOK}) ->
+    ?LOG_INFO("riak_kv_wm_object:ensure_doc/1 triggered when doc=undefined with args ~p.", [Ctx]),
     case Ctx#ctx.type_exists of
         true ->
             Options0 =
