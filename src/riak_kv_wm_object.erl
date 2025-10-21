@@ -286,6 +286,7 @@ is_authorized(ReqData, Ctx) ->
 
 -spec forbidden(#wm_reqdata{}, context()) -> term().
 forbidden(RD, Ctx) ->
+    ?LOG_INFO("riak_kv_wm_object:forbidden/2 triggered with args ~p, ~p", [RD, Ctx]),
     case riak_kv_wm_utils:is_forbidden(RD) of
         true ->
             {true, RD, Ctx};
@@ -321,6 +322,7 @@ validate_resource(RD, Ctx, Perm) when Perm == "riak_kv.get" ->
     %% we do this early as it used to be done in the
     %% malformed check, so the rest of the resource
     %% assumes that the key is present.
+    ?LOG_INFO("riak_kv_wm_object:validate_resource/3 triggered with args ~p, ~p, ~p", [RD, Ctx, Perm]),
     validate_doc(RD, Ctx);
 validate_resource(RD, Ctx, _Perm) ->
     %% Ensure the bucket type exists, otherwise 404 early.
