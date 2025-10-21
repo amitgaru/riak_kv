@@ -333,6 +333,7 @@ validate_resource(RD, Ctx, _Perm) ->
 validate_doc(RD, Ctx) ->
     ?LOG_INFO("riak_kv_wm_object:validate_doc/2 triggered with args ~p, ~p", [RD, Ctx]),
     DocCtx = ensure_doc(Ctx),
+    ?LOG_INFO("riak_kv_wm_object:validate_doc/2 DocCtx: ~p", [DocCtx]),
     case DocCtx#ctx.doc of
         {error, Reason} ->
             handle_common_error(Reason, RD, DocCtx);
@@ -734,6 +735,7 @@ encodings_provided(RD, Ctx0) ->
 %%      of a key-level PUT request will be accepted by this resource.
 %%      (A key-level put *must* include a Content-Type header.)
 content_types_accepted(RD, Ctx) ->
+    ?LOG_INFO("riak_kv_wm_object:content_types_accepted/2 triggered with args ~p, ~p", [RD, Ctx]),
     case wrq:get_req_header(?HEAD_CTYPE, RD) of
         undefined ->
             %% user must specify content type of the data
