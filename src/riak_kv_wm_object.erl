@@ -672,6 +672,7 @@ charsets_provided(RD, Ctx=#ctx{method=Method})
             when Method =:= 'DELETE' ->
     {no_charset, RD, Ctx};
 charsets_provided(RD, Ctx0) ->
+    ?LOG_INFO("riak_kv_wm_object:charsets_provided/2 triggered with args ~p, ~p", [RD, Ctx0]),
     DocCtx = ensure_doc(Ctx0),
     case DocCtx#ctx.doc of
         {ok, _} ->
@@ -697,6 +698,7 @@ charsets_provided(RD, Ctx0) ->
 %%      used in the PUT request that stored the document in Riak, or
 %%      "identity" and "gzip" if no encoding was specified at PUT-time.
 encodings_provided(RD, Ctx0) ->
+    ?LOG_INFO("riak_kv_wm_object:encodings_provided/2 triggered with args ~p, ~p", [RD, Ctx0]),
     DocCtx =
         case Ctx0#ctx.method of
             UpdM when UpdM =:= 'PUT'; UpdM =:= 'POST'; UpdM =:= 'DELETE' ->
