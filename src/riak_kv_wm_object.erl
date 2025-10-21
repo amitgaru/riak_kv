@@ -329,6 +329,7 @@ validate_resource(RD, Ctx, _Perm) ->
 %% @doc Detects whether fetching the requested object results in an
 %% error.
 validate_doc(RD, Ctx) ->
+    ?LOG_INFO("riak_kv_wm_object:validate_doc/2 triggered with args ~p, ~p", [RD, Ctx]),
     DocCtx = ensure_doc(Ctx),
     case DocCtx#ctx.doc of
         {error, Reason} ->
