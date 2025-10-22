@@ -29,6 +29,8 @@
 -include_lib("eunit/include/eunit.hrl").
 -endif.
 
+-include_lib("kernel/include/logger.hrl").
+
 -type result() :: {ok, riak_object:riak_object()} |
                   {error, notfound} | % for dialyzer
                   {error, any()}.
@@ -124,6 +126,7 @@ head_merge(GetCore) ->
 %% arrival at the head.
 -spec add_result(non_neg_integer(), result(), node(), getcore()) -> getcore().
 add_result(Idx, {ok, RObj}, Node, GetCore0) ->
+    ?LOG_INFO("riak_kv_get_core:add_result/4 trigged with args ~p, ~p, ~p, ~p", [Idx, {ok, RObj}, Node, GetCore0]),
     GetCore = 
         case GetCore0#getcore.expected_fetchclock of
             false ->
@@ -153,6 +156,7 @@ add_result(Idx, {ok, RObj}, Node, GetCore0) ->
                 lists:usort([Node|GetCore#getcore.confirmed_nodes])},
             Idx);
 add_result(Idx, {error, notfound} = Result, Node, GetCore) ->
+    ?LOG_INFO("riak_kv_get_core:add_result/4 trigged with args ~p, ~p, ~p, ~p", [Idx, {error, notfound}, Node, GetCore]),
     case GetCore#getcore.notfound_ok of
         true ->
             num_pr(GetCore#getcore{
@@ -169,6 +173,7 @@ add_result(Idx, {error, notfound} = Result, Node, GetCore) ->
                 num_notfound = GetCore#getcore.num_notfound + 1}
     end;
 add_result(Idx, {error, _Reason} = Result, _Node, GetCore) ->
+    ?LOG_INFO("riak_kv_get_core:add_result/4 trigged with args ~p, ~p, ~p, ~p", [Idx, {error, _Reason}, _Node, GetCore]),
     GetCore#getcore{
         results = [{Idx, Result}|GetCore#getcore.results],
         merged = undefined,

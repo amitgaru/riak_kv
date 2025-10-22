@@ -1567,6 +1567,7 @@ handle_command({block_vnode, BlockRequest, BlockTimeMS}, Sender, State) ->
     end;
 
 handle_command(Req, Sender, State) ->
+    ?LOG_INFO("riak_kv_vnode:handle_command/3 triggered with args ~p, ~p, ~p", [Req, Sender, State]),
     handle_request(riak_kv_requests:request_type(Req), Req, Sender, State).
 
 
@@ -1584,6 +1585,7 @@ handle_request(kv_get_request, Req, Sender, State) ->
     ReqId = riak_kv_requests:get_request_id(Req),
     do_get(Sender, BKey, ReqId, State);
 handle_request(kv_head_request, Req, Sender, State) ->
+    ?LOG_INFO("riak_kv_vnode:handle_request/4 triggered with args kv_head_request, ~p, ~p, ~p", [Req, Sender, State]),
     Mod = State#state.mod,
     ModState = State#state.modstate,
     {BT, _K} = BKey = riak_kv_requests:get_bucket_key(Req),
