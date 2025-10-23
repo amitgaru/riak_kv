@@ -3317,6 +3317,7 @@ put_merge(true, LWW, CurObj, UpdObj, {_NewEpoch, VId}, StartTime) ->
 %% @private
 do_get(_Sender, BKey, ReqID,
        State=#state{idx=Idx, mod=Mod, modstate=ModState}) ->
+    ?LOG_INFO("riak_kv_vnode:do_get/4 triggered with args ~p, ~p, ~p, ~p", [_Sender, BKey, ReqID, State]),
     StartTS = os:timestamp(),
     {Retval, ModState1} = do_get_term(BKey, Mod, ModState),
     State1 = State#state{modstate=ModState1},
@@ -3327,7 +3328,7 @@ do_get(_Sender, BKey, ReqID,
 %% @private
 do_head(_Sender, BKey, ReqID,
        State=#state{idx=Idx, mod=Mod, modstate=ModState}) ->
-    ?LOG_INFO("riak_kv_vnode:do_head/4 triggered with args ~p, ~p, ~p", [_Sender, BKey, ReqID]),
+    ?LOG_INFO("riak_kv_vnode:do_head/4 triggered with args ~p, ~p, ~p, ~p", [_Sender, BKey, ReqID, State]),
     StartTS = os:timestamp(),
     {Retval, ModState1} = do_head_term(BKey, Mod, ModState),
     State1 = State#state{modstate=ModState1},
