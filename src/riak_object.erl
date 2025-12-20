@@ -29,6 +29,8 @@
 -include("riak_kv_wm_raw.hrl").
 -include("riak_object.hrl").
 
+-include_lib("kernel/include/logger.hrl").
+
 -export_type([riak_object/0, proxy_object/0, bucket/0, key/0, value/0, binary_version/0, index_value/0]).
 
 -include_lib("kernel/include/logger.hrl").
@@ -1684,9 +1686,12 @@ decode_vclock(EncodedVClock) ->
     % so switching will not be a problem. But upgrading from first version
     % without embedded encoding is handled by the try/catch. We should be
     % able to remove that expensive part a couple of releases after 1.4
+    ?LOG_INFO("riak_object:decode_vclock/1 triggered with args ~p", [EncodedVClock]),
     {Method, EncodedVClock2} = try binary_to_term(EncodedVClock)
     catch error:badarg -> {encode_zlib, EncodedVClock} end,
-    decode_vclock(Method, EncodedVClock2).
+    ReturnedVal = decode_vclock(Method, EncodedVClock2),
+    ?LOG_INFO("riak_object:decode_vclock/1 decoded to Method: ~p | EncodedVClock2: ~p | Value: ~p", [Method, EncodedVClock2, ReturnedVal]),
+    ReturnedVal.
 
 %% Decode a vclock against our capability settings:
 -spec decode_vclock(atom(), VClock :: term()) -> vclock:vclock().
