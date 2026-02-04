@@ -575,7 +575,7 @@ compare_content_dates(C1,C2) ->
 %%       object may strictly dominate another.
 -spec merge(riak_object(), riak_object()) -> riak_object().
 merge(OldObject=#r_object{}, NewObject=#r_object{}) ->
-    ?LOG_INFO("riak_object:merge/2 called with args OldObject: ~p and ~p", [OldObject, NewObject]),
+    ?LOG_INFO("riak_object:merge/2 called with args OldObject: ~p and NewObject: ~p", [OldObject, NewObject]),
     NewObj1 = apply_updates(NewObject),
     Bucket = bucket(OldObject),
     case riak_kv_util:get_write_once(Bucket) of
