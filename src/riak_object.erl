@@ -1283,7 +1283,7 @@ syntactic_merge(CurrentObject, NewObject) ->
                   end,
 
     case ancestors([UpdatedCurr, UpdatedNew]) of
-        [] -> merge(UpdatedCurr, UpdatedNew);
+        [] -> Result = merge(UpdatedCurr, UpdatedNew), ?LOG_INFO("riak_object:syntactic_merge/2 result is ~p", [Result]), Result;
         [Ancestor] ->
             case equal(Ancestor, UpdatedCurr) of
                 true  -> UpdatedNew;
