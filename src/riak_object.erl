@@ -1263,6 +1263,7 @@ update(false, OldObject=#r_object{}, NewObject=#r_object{}, Actor, Timestamp) ->
             Bucket = bucket(OldObject),
             DottedPutObject = assign_dot(NewObject, Dot, dvv_enabled(Bucket)),
             MergedObject = merge(DottedPutObject, OldObject),
+            ?LOG_INFO("riak_object:update/5 merged object is ~p", [MergedObject]),
             set_vclock(MergedObject, FrontierClock)
     end.
 
