@@ -920,7 +920,9 @@ syntactic_put_merge(CurObj, UpdObj) ->
                 [CurObj] ->
                     UpdObj;
                 _ ->
-                    riak_object:merge(CurObj, UpdObj)
+                    Result = riak_object:merge(CurObj, UpdObj),
+                    ?LOG_INFO("ec_eqc:syntactic_put_merge/2 result ~p", [Result]),
+                    Result
             end
     end.
 
