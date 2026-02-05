@@ -28,6 +28,8 @@
 -include_lib("eqc/include/eqc_statem.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
+-include_lib("kernel/include/logger.hrl").
+
 -compile([export_all, nowarn_export_all]).
 
 -record(state,{vnodes=[] :: [binary()], %% Sort of like the ring, upto N*2 vnodeids
@@ -288,6 +290,7 @@ coord_put(VNode, Value, Time, VNodeData) ->
 coord_put_ro(VNode, NewObj, undefined, Time) ->
     riak_object:increment_vclock(NewObj, VNode, Time);
 coord_put_ro(VNode, NewObj, OldObj, Time) ->
+    ?LOG_INFO("riak_object_dvv_statem:coord_put_ro/4 called with VNode=~p, NewObj=~p, OldObj=~p, Time=~p", [VNode, NewObj, OldObj, Time]),
     riak_object:update(false, OldObj, NewObj, VNode, Time).
 
 %% Update the DVVSet as if in a co-ordinating vnode

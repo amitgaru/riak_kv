@@ -3607,6 +3607,7 @@ put_merge(false, false, CurObj, UpdObj, {NewEpoch, VId}, _StartTime) -> % coord=
             end
     end;
 put_merge(true, LWW, CurObj, UpdObj, {_NewEpoch, VId}, StartTime) ->
+    ?LOG_INFO("riak_kv_vnode:put_merge/6 called put args coord=true, LWW=~p, CurObj=~p, UpdObj=~p, _NewEpoch=~p, VId=~p, StartTime=~p", [LWW, CurObj, UpdObj, _NewEpoch, VId, StartTime]),
     {newobj, riak_object:update(LWW, CurObj, UpdObj, VId, StartTime)}.
 
 %% @private

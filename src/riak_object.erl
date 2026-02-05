@@ -533,6 +533,7 @@ spoof_getdeletedobject(Obj) ->
 %% called with a list of conflicting objects. Use `remove_dominated/1'
 %% to get such a list first.
 reconcile(Objects) ->
+    ?LOG_INFO("riak_object:reconcile/1 called with args Objects: ~p", [Objects]),
     lists:foldl(fun syntactic_merge/2,
                 hd(Objects),
                 tl(Objects)).
