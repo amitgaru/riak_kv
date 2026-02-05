@@ -616,6 +616,7 @@ merge_contents(NewObject, OldObject, false) ->
     Result = lists:umerge(fun compare/2,
                           lists:usort(fun compare/2, NewObject#r_object.contents),
                           lists:usort(fun compare/2, OldObject#r_object.contents)),
+    ?LOG_INFO("riak_object:merge_contents/3 result: ~p", [Result]),
     {undefined, Result};
 
 %% @private with DVV enabled, use event dots in sibling metadata to
@@ -658,6 +659,7 @@ compare(A=#r_content{value=VA}, B=#r_content{value=VB}) ->
 %% @see compare/2
 %% @see lists:usort/3
 compare_metadata(#r_content{metadata=MA}, #r_content{metadata=MB}) ->
+    ?LOG_INFO("riak_object:compare_metadata/2 called with args MA: ~p and MB: ~p", [MA, MB]),
     ASize = metadata_keycount(MA),
     BSize = metadata_keycount(MB),
     if ASize < BSize ->
