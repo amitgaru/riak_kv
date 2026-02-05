@@ -1806,6 +1806,7 @@ handle_command(Req, Sender, State) ->
 %% @todo: pre record encapsulation there was no catch all clause in handle_command,
 %%        so crashing on unknown should work.
 handle_request(kv_put_request, Req, Sender, #state{idx = Idx} = State) ->
+    ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_put_request, ~p, ~p, ~p", [Req, Sender, State]),
     StartTS = os:timestamp(),
     ReqId = riak_kv_requests:get_request_id(Req),
     riak_core_vnode:reply(Sender, {w, Idx, ReqId}),
@@ -3278,6 +3279,8 @@ prepare_put_existing_object(#state{idx =Idx} = State,
                              crdt_op = CRDTOp}=PutArgs,
                             OldObj, IndexBackend, CacheData, RequiresGet) ->
     {IsNewEpoch, ActorId, State2} = maybe_new_key_epoch(Coord, State, OldObj, RObj),
+    ?LOG_INFO("riak_kv_vnode:prepare_put_existing_object called with State ~p, OldObj ~p, RObj ~p, IsNewEpoch ~p, ActorId ~p",
+              [State#state.idx, OldObj, RObj, IsNewEpoch, ActorId]),
     case put_merge(Coord, LWW, OldObj, RObj, {IsNewEpoch, ActorId}, StartTime) of
         {oldobj, OldObj} ->
             {{false, {OldObj, unchanged_no_old_object}}, PutArgs, State2};
@@ -3594,7 +3597,7 @@ put_merge(false, false, CurObj, UpdObj, {NewEpoch, VId}, _StartTime) -> % coord=
     %% a downstream merge, or replication of a coordinated PUT
     %% Merge the value received with local replica value
     %% and store the value IFF it is different to what we already have
-    ?LOG_INFO("riak_kv_vnode:put_merge/6 called put args coord=false, LWW=false, CurObj=~p, UpdObj=~p, _NewEpoch=~p, VId=~p, StartTime=~p", [CurObj, UpdObj, NewEpoch, VId, _StartTime]),
+    ?LOG_INFO("riak_kv_vnode:put_merge/6 called put args coord=false, LWW=false, CurObj=~p, UpdObj=~p, NewEpoch=~p, VId=~p, _StartTime=~p", [CurObj, UpdObj, NewEpoch, VId, _StartTime]),
     ResObj = riak_object:syntactic_merge(CurObj, UpdObj),
     case NewEpoch of
         true ->
