@@ -355,10 +355,12 @@ strict_descendant(O1, O2) ->
 reconcile([RObj], _AllowMultiple) ->
     RObj;
 reconcile(Objects, AllowMultiple) ->
+    ?LOG_INFO("riak_object:reconcile/2 called with args Objects: ~p and AllowMultiple: ~p", [Objects, AllowMultiple]),
     RObj = reconcile(remove_dominated(Objects)),
     case AllowMultiple of
         false ->
             Contents = [most_recent_content(RObj#r_object.contents)],
+            ?LOG_INFO("riak_object:reconcile/2 most recent content: ~p", [Contents]),
             RObj#r_object{contents=Contents};
         true ->
             RObj
