@@ -3594,7 +3594,7 @@ put_merge(false, false, CurObj, UpdObj, {NewEpoch, VId}, _StartTime) -> % coord=
     %% a downstream merge, or replication of a coordinated PUT
     %% Merge the value received with local replica value
     %% and store the value IFF it is different to what we already have
-    ?LOG_INFO("riak_kv_vnode:put_merge/6 called put args coord=false, LWW=~p, CurObj=~p, UpdObj=~p, _NewEpoch=~p, VId=~p, StartTime=~p", [LWW, CurObj, UpdObj, _NewEpoch, VId, _StartTime]),
+    ?LOG_INFO("riak_kv_vnode:put_merge/6 called put args coord=false, LWW=false, CurObj=~p, UpdObj=~p, _NewEpoch=~p, VId=~p, StartTime=~p", [CurObj, UpdObj, NewEpoch, VId, _StartTime]),
     ResObj = riak_object:syntactic_merge(CurObj, UpdObj),
     case NewEpoch of
         true ->
