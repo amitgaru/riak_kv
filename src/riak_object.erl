@@ -612,6 +612,7 @@ merge_write_once(OldObject, NewObject) ->
 %% @doc Merge the r_objects contents by converting the inner dict to
 %%      a list, ensuring a sane order, and merging into a unique list.
 merge_contents(NewObject, OldObject, false) ->
+    ?LOG_INFO("riak_object:merge_contents/3 called with args NewObject: ~p, OldObject: ~p, DVV: false", [NewObject, OldObject]),
     Result = lists:umerge(fun compare/2,
                           lists:usort(fun compare/2, NewObject#r_object.contents),
                           lists:usort(fun compare/2, OldObject#r_object.contents)),
@@ -622,6 +623,7 @@ merge_contents(NewObject, OldObject, false) ->
 %% sibling explsion. Also, since every sibling is iterated over (some
 %% twice!) why not merge CRDTs here, too?
 merge_contents(NewObject, OldObject, true) ->
+    ?LOG_INFO("riak_object:merge_contents/3 called with args NewObject: ~p, OldObject: ~p, DVV: true", [NewObject, OldObject]),
     Bucket = bucket(NewObject),
     Key = key(NewObject),
     MergeAcc0 = prune_object_siblings(OldObject, vclock(NewObject)),
@@ -807,6 +809,7 @@ get_drop_candidate(Dot, Dict) ->
 -spec merge_acc_to_contents(riak_object:bucket(), merge_acc())
                            -> list(r_content()).
 merge_acc_to_contents(Bucket, MergeAcc) ->
+    ?LOG_INFO("riak_object:merge_acc_to_contents/2 called with args Bucket: ~p and MergeAcc: ~p", [Bucket, MergeAcc]),
     #merge_acc{keep=Keep, crdt=CRDTs} = MergeAcc,
     %% Convert the non-CRDT sibling values back to dict metadata values.
     %%
