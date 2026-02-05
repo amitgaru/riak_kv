@@ -293,6 +293,8 @@ merge_value({MD, <<?TAG:8/integer, Version:8/integer, CRDTBin/binary>>=Content},
             {Dict, NonCRDTSiblings, Errors}) ->
     case deserialize_crdt(Version, CRDTBin) of
         {ok, CRDT=?CRDT{mod=Mod, value=Val, ctype=CType}} ->
+            ?LOG_INFO("riak_kv_crdt:merge_value/2 deserialized CRDT content with version ~p, mod ~p, value ~p, ctype ~p MD ~p Content ~p Dict ~p NonCRDTSiblings ~p Errors ~p",
+                      [Version, Mod, Val, CType, MD, Content, Dict, NonCRDTSiblings, Errors]),
             D2 = orddict:update(Mod,
                                 fun({Meta, Mergedest=?CRDT{value=Value}}) ->
                                         NewMeta = merge_meta(CType, Meta, MD),
