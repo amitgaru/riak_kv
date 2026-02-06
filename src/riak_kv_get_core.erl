@@ -29,6 +29,9 @@
 -include_lib("eunit/include/eunit.hrl").
 -endif.
 
+-include_lib("kernel/include/logger.hrl").
+
+
 -type result() :: {ok, riak_object:riak_object()} |
                   {error, notfound} | % for dialyzer
                   {error, any()}.
@@ -268,6 +271,7 @@ response(#getcore{r = R, num_ok = NumOK, pr= PR, num_pok = NumPOK,
             andalso HM == false ->
     #getcore{results = Results, allow_mult=AllowMult,
         deletedvclock = DeletedVClock} = GetCore,
+    ?LOG_INFO("riak_kv_get_core:response/1 called with args ~p. HM ~p.", [GetCore, HM]),
     {ObjState, MObj} = Merged = merge(Results, AllowMult),
     Reply = case ObjState of
         ok ->
@@ -284,6 +288,7 @@ response(#getcore{r = R, num_ok = NumOK, pr= PR, num_pok = NumPOK,
         when (NumOK >= R andalso NumPOK >= PR) orelse ExpClock == true ->
     #getcore{results = Results, allow_mult=AllowMult,
         deletedvclock = DeletedVClock} = GetCore,
+    ?LOG_INFO("riak_kv_get_core:response/1 called with args ~p.", [GetCore]),
     Merged = merge_heads(Results, AllowMult, GetCore#getcore.return_body),
     case Merged of
         {ok, _MergedObj} ->
