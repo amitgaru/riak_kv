@@ -389,6 +389,7 @@ execute(timeout, StateData0=#state{timeout=Timeout,req_id=ReqId,
                 % will be used
                 %
                 % Send head requests to all the Preflist
+                ?LOG_INFO("Sending HEAD requests to preflist ~p for key ~p", [Preflist, BKey]),
                 riak_kv_vnode:head(Preflist, BKey, ReqId),
                 HO_GetCore = riak_kv_get_core:head_merge(GetCore),
                 StateData0#state{tref=TRef, get_core = HO_GetCore};
