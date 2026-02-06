@@ -421,7 +421,9 @@ info(#getcore{num_ok = NumOks, num_fail = NumFail, results = Results}) ->
 %% Internal functions
 %% ====================================================================
 merge(Replies, AllowMult) ->
+    ?LOG_INFO("riak_kv_get_core:merge/2 called with args ~p, AllowMult ~p", [Replies, AllowMult]),
     RObjs = [RObj || {_I, {ok, RObj}} <- Replies],
+    ?LOG_INFO("riak_kv_get_core:merge/2 extracted RObjs ~p", [RObjs]),
     case RObjs of
         [] ->
             {notfound, undefined};
