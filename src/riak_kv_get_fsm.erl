@@ -441,6 +441,7 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
             _ -> 
                 riak_kv_get_core:add_result(Idx, VnodeResult, ResNode, GetCore)
         end,
+    ?LOG_INFO("UpdGetCore ~p", [UpdGetCore]),
     case riak_kv_get_core:enough(UpdGetCore) of
         true ->
             % response(GetCore) will either call merge or head_merge. This
@@ -451,6 +452,8 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
             % be made which is a request to update certain objects in the
             % results with bodies (i.e. by substituting a HEAD request with a
             % GET request for that vnode)
+            ?LOG_INFO("After enough, UpdGetCore ~p", [UpdGetCore]),
+
             case riak_kv_get_core:response(UpdGetCore) of
                 {{fetch, IdxList}, _}  ->
                     % Trigger genuine GETs to each vnode index required to
