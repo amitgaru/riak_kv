@@ -1820,14 +1820,17 @@ handle_request(kv_get_request, Req, Sender, State) ->
     do_get(Sender, BKey, ReqId, State);
 handle_request(kv_head_request, Req, Sender, State) ->
     Mod = State#state.mod,
+    ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_head_request, ~p, ~p, Mod: ~p", [Req, Sender, Mod]),
     ModState = State#state.modstate,
     {BT, _K} = BKey = riak_kv_requests:get_bucket_key(Req),
     ReqId = riak_kv_requests:get_request_id(Req),
     {ok, Capabilities} = Mod:capabilities(BT, ModState),
     case maybe_support_head_requests(Capabilities) of
         true ->
+            ?LOG_INFO("Capabilities ~p support head requests, proceeding with head request", [Capabilities]),
             do_head(Sender, BKey, ReqId, State);
         _ ->
+            ?LOG_INFO("Capabilities ~p do not support head requests, falling back to get request", [Capabilities]),
             do_get(Sender, BKey, ReqId, State)
     end;
 %% NB. The following two function clauses discriminate on the async_put State field
