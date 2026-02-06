@@ -1173,7 +1173,7 @@ wait_for_reqid(ReqId, Timeout) ->
                     ok
             end,
             Response;
-        {ReqId, Response} -> Response
+        {ReqId, Response} -> ?LOG_INFO("Received response ~p for request ~p", [Response, ReqId]), Response
     after Timeout ->
             {error, timeout}
     end.
