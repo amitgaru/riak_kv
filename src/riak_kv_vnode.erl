@@ -3623,6 +3623,7 @@ do_get(_Sender, BKey, ReqID,
        State=#state{idx=Idx, mod=Mod, modstate=ModState}) ->
     StartTS = os:timestamp(),
     {Retval, ModState1} = do_get_term(BKey, Mod, ModState),
+    ?LOG_INFO("do_get_term returned ~p for BKey ~p ModState1 ~p", [Retval, BKey, ModState1]),
     State1 = State#state{modstate=ModState1},
     {Retval1, State3} = handle_returned_value(BKey, Retval, State1),
     update_vnode_stats(vnode_get, Idx, StartTS),
