@@ -214,6 +214,7 @@ get(Bucket, Key, #state{ref=Ref, key_vsn=KVers}=State) ->
     BitcaskKey = make_bk(KVers, Bucket, Key),
     case bitcask:get(Ref, BitcaskKey) of
         {ok, Value} ->
+            ?LOG_INFO("Successfully retrieved object ~p/~p from bitcask Value ~p", [Bucket, Key, Value]),
             {ok, Value, State};
         not_found  ->
             {error, not_found, State};
