@@ -467,8 +467,10 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
                                                 override_vnodes = IdxList,
                                                 get_core = NewGC});
                 {Reply, UpdGetCore2} ->
+                    ?LOG_INFO("Reply ~p, UpdGetCore2 ~p", [Reply, UpdGetCore2]),
                     StateWithReply = StateData#state{get_core = UpdGetCore2},
                     NewStateData = client_reply(Reply, StateWithReply),
+                    timer:sleep(5000),
                     update_stats(Reply, NewStateData),
                     maybe_finalize(NewStateData)
             end;
