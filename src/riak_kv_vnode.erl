@@ -1800,6 +1800,7 @@ handle_command({block_vnode, BlockRequest, BlockTimeMS}, Sender, State) ->
     end;
 
 handle_command(Req, Sender, State) ->
+    ?LOG_INFO("riak_kv_vnode:handle_command/3 called with args Req: ~p, Sender: ~p, State: ~p, Req type: ~p", [Req, Sender, State, riak_kv_requests:request_type(Req)]),
     handle_request(riak_kv_requests:request_type(Req), Req, Sender, State).
 
 
