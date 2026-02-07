@@ -1856,6 +1856,7 @@ handle_request(kv_w1c_put_request, Req, _Sender, State=#state{async_put=false, u
     ModState = State#state.modstate,
     Idx = State#state.idx,
     StartTS = os:timestamp(),
+    ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_w1c_put_request, ~p, ~p, ~p, ~p", [Req, EncodedVal, _Sender, State]),
     case Mod:put(Bucket, Key, [], EncodedVal, ModState) of
         {ok, UpModState} ->
             aae_update(Bucket, Key, use_binary, assumed_no_old_object, EncodedVal, State),
