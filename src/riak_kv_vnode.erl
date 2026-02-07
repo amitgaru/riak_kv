@@ -3595,7 +3595,7 @@ select_newest_content(Mult) ->
                    riak_object:get_last_modified(MD1))
          end,
          Mult)),
-    ?LOG_INFO("select_newest_content selected content with metadata ~p", [element(1, Result)]),
+    ?LOG_INFO("select_newest_content selected: ~p", [Result]),
     Result.
 
 %% @private
