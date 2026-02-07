@@ -239,6 +239,7 @@ get(Bucket, Key, #state{ref=Ref, key_vsn=KVers}=State) ->
 put(Bucket, PrimaryKey, _IndexSpecs, Val,
     #state{ref=Ref, key_vsn=KeyVsn}=State) ->
     BitcaskKey = make_bk(KeyVsn, Bucket, PrimaryKey),
+    ?LOG_INFO("Putting object ~p/~p into bitcask with value ~p", [Bucket, PrimaryKey, Val]),
     case bitcask:put(Ref, BitcaskKey, Val) of
         ok ->
             {ok, State};
