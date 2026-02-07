@@ -3587,13 +3587,16 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
 %% @private
 %% choose the latest content to store for the allow_mult=false case
 select_newest_content(Mult) ->
-    hd(lists:sort(
+    ?LOG_INFO("riak_kv_vnode:select_newest_content called with Mult ~p", [Mult]),
+    Result = hd(lists:sort(
          fun({MD0, _}, {MD1, _}) ->
                  riak_core_util:compare_dates(
                    riak_object:get_last_modified(MD0),
                    riak_object:get_last_modified(MD1))
          end,
-         Mult)).
+         Mult)),
+    ?LOG_INFO("select_newest_content selected content with metadata ~p", [element(1, Result)]),
+    Result.
 
 %% @private
 put_merge(false, true, _CurObj, UpdObj, _VId, _StartTime) -> % coord=false, LWW=true
