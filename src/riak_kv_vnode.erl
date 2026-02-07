@@ -4444,6 +4444,8 @@ encode_and_put_no_sib_check(Obj, Mod, Bucket, Key, IndexSpecs, ModState,
             Mod:put_object(Bucket, Key, IndexSpecs, Obj, ModState);
         false ->
             ObjFmt = object_format(Mod, ModState),
+            ?LOG_INFO("Encoding object for put to ~p/~p Obj: ~p with format ~p",
+                     [Bucket, Key, ObjFmt, Obj]),
             EncodedVal = riak_object:to_binary(ObjFmt, Obj),
             BinSize = size(EncodedVal),
             %% Report or fail on large objects
