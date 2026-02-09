@@ -1800,14 +1800,14 @@ handle_command({block_vnode, BlockRequest, BlockTimeMS}, Sender, State) ->
     end;
 
 handle_command(Req, Sender, State) ->
-    ?LOG_INFO("riak_kv_vnode:handle_command/3 called with args Req: ~p, Sender: ~p, State: ~p, Req type: ~p", [Req, Sender, State, riak_kv_requests:request_type(Req)]),
+    % ?LOG_INFO("riak_kv_vnode:handle_command/3 called with args Req: ~p, Sender: ~p, State: ~p, Req type: ~p", [Req, Sender, State, riak_kv_requests:request_type(Req)]),
     handle_request(riak_kv_requests:request_type(Req), Req, Sender, State).
 
 
 %% @todo: pre record encapsulation there was no catch all clause in handle_command,
 %%        so crashing on unknown should work.
 handle_request(kv_put_request, Req, Sender, #state{idx = Idx} = State) ->
-    ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_put_request, ~p, ~p, ~p", [Req, Sender, State]),
+    % ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_put_request, ~p, ~p, ~p", [Req, Sender, State]),
     StartTS = os:timestamp(),
     ReqId = riak_kv_requests:get_request_id(Req),
     riak_core_vnode:reply(Sender, {w, Idx, ReqId}),
@@ -1820,7 +1820,7 @@ handle_request(kv_get_request, Req, Sender, State) ->
     do_get(Sender, BKey, ReqId, State);
 handle_request(kv_head_request, Req, Sender, State) ->
     Mod = State#state.mod,
-    ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_head_request, ~p, ~p, Mod: ~p", [Req, Sender, Mod]),
+    % ?LOG_INFO("riak_kv_vnode:handle_request/4 called with args kv_head_request, ~p, ~p, Mod: ~p", [Req, Sender, Mod]),
     ModState = State#state.modstate,
     {BT, _K} = BKey = riak_kv_requests:get_bucket_key(Req),
     ReqId = riak_kv_requests:get_request_id(Req),

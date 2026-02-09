@@ -643,7 +643,7 @@ merge_contents(NewObject, OldObject, true) ->
 %%
 %% @see lists:usort/2
 compare(A=#r_content{value=VA}, B=#r_content{value=VB}) ->
-    ?LOG_INFO("riak_object:compare/2 called with args VA: ~p and VB: ~p", [VA, VB]),
+    % ?LOG_INFO("riak_object:compare/2 called with args VA: ~p and VB: ~p", [VA, VB]),
     if VA < VB ->
             true;
        VA > VB ->
