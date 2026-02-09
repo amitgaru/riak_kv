@@ -389,7 +389,7 @@ execute(timeout, StateData0=#state{timeout=Timeout,req_id=ReqId,
                 % will be used
                 %
                 % Send head requests to all the Preflist
-                ?LOG_INFO("Sending HEAD requests to preflist ~p for key ~p", [Preflist, BKey]),
+                % ?LOG_INFO("Sending HEAD requests to preflist ~p for key ~p", [Preflist, BKey]),
                 riak_kv_vnode:head(Preflist, BKey, ReqId),
                 HO_GetCore = riak_kv_get_core:head_merge(GetCore),
                 StateData0#state{tref=TRef, get_core = HO_GetCore};
@@ -442,7 +442,7 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
             _ -> 
                 riak_kv_get_core:add_result(Idx, VnodeResult, ResNode, GetCore)
         end,
-    ?LOG_INFO("UpdGetCore ~p", [UpdGetCore]),
+    % ?LOG_INFO("UpdGetCore ~p", [UpdGetCore]),
     case riak_kv_get_core:enough(UpdGetCore) of
         true ->
             % response(GetCore) will either call merge or head_merge. This
@@ -453,7 +453,7 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
             % be made which is a request to update certain objects in the
             % results with bodies (i.e. by substituting a HEAD request with a
             % GET request for that vnode)
-            ?LOG_INFO("After enough, UpdGetCore ~p", [UpdGetCore]),
+            % ?LOG_INFO("After enough, UpdGetCore ~p", [UpdGetCore]),
 
             case riak_kv_get_core:response(UpdGetCore) of
                 {{fetch, IdxList}, _}  ->
@@ -467,7 +467,7 @@ waiting_vnode_r({r, VnodeResult, Idx, _ReqId},
                                                 override_vnodes = IdxList,
                                                 get_core = NewGC});
                 {Reply, UpdGetCore2} ->
-                    ?LOG_INFO("Reply ~p, UpdGetCore2 ~p", [Reply, UpdGetCore2]),
+                    % ?LOG_INFO("Reply ~p, UpdGetCore2 ~p", [Reply, UpdGetCore2]),
                     StateWithReply = StateData#state{get_core = UpdGetCore2},
                     NewStateData = client_reply(Reply, StateWithReply),
                     update_stats(Reply, NewStateData),

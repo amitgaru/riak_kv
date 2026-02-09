@@ -454,9 +454,9 @@ merge_heads(Replies, AllowMult, ReturnBody) ->
         [] ->
             {notfound, undefined};
         _ ->
-            ?LOG_INFO("merge_heads: IdxObjs ~p, ReturnBody ~p", [IdxObjs, ReturnBody]),
+            % ?LOG_INFO("merge_heads: IdxObjs ~p, ReturnBody ~p", [IdxObjs, ReturnBody]),
             {BestReplies, FetchIdxObjL} = riak_object:find_bestobject(IdxObjs),
-            ?LOG_INFO("merge_heads: BestReplies ~p, FetchIdxObjL ~p", [BestReplies, FetchIdxObjL]),
+            % ?LOG_INFO("merge_heads: BestReplies ~p, FetchIdxObjL ~p", [BestReplies, FetchIdxObjL]),
             case {FetchIdxObjL, ReturnBody} of
                 {_, false} ->
                     merge(BestReplies ++ FetchIdxObjL, AllowMult);

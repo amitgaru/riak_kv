@@ -3569,6 +3569,7 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
         {false, [_], false} ->
             {ok, Obj};
         {false, Mult, false} ->
+            ?LOG_INFO("riak_kv_vnode:enforce_allow_mult calling select_newest_content for Obj: ~p, OldObj: ~p", [Obj, OldObj]),
             {MD, V} = select_newest_content(Mult),
             {ok, riak_object:set_contents(Obj, [{MD, V}])};
         {_, _, true} ->
