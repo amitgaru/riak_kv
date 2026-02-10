@@ -288,7 +288,7 @@ response(#getcore{r = R, num_ok = NumOK, pr= PR, num_pok = NumPOK,
         when (NumOK >= R andalso NumPOK >= PR) orelse ExpClock == true ->
     #getcore{results = Results, allow_mult=AllowMult,
         deletedvclock = DeletedVClock} = GetCore,
-    ?LOG_INFO("riak_kv_get_core:response/1 called with args ~p.", [GetCore]),
+    % ?LOG_INFO("riak_kv_get_core:response/1 called with args ~p.", [GetCore]),
     Merged = merge_heads(Results, AllowMult, GetCore#getcore.return_body),
     case Merged of
         {ok, _MergedObj} ->
@@ -421,9 +421,9 @@ info(#getcore{num_ok = NumOks, num_fail = NumFail, results = Results}) ->
 %% Internal functions
 %% ====================================================================
 merge(Replies, AllowMult) ->
-    ?LOG_INFO("riak_kv_get_core:merge/2 called with args ~p, AllowMult ~p", [Replies, AllowMult]),
+    % ?LOG_INFO("riak_kv_get_core:merge/2 called with args ~p, AllowMult ~p", [Replies, AllowMult]),
     RObjs = [RObj || {_I, {ok, RObj}} <- Replies],
-    ?LOG_INFO("riak_kv_get_core:merge/2 extracted RObjs ~p", [RObjs]),
+    % ?LOG_INFO("riak_kv_get_core:merge/2 extracted RObjs ~p", [RObjs]),
     case RObjs of
         [] ->
             {notfound, undefined};

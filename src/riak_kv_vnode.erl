@@ -3588,7 +3588,7 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
 %% @private
 %% choose the latest content to store for the allow_mult=false case
 select_newest_content(Mult) ->
-    ?LOG_INFO("riak_kv_vnode:select_newest_content called with Mult ~p", [Mult]),
+    % ?LOG_INFO("riak_kv_vnode:select_newest_content/1 called with Mult ~p", [Mult]),
     Result = hd(lists:sort(
          fun({MD0, _}, {MD1, _}) ->
                  riak_core_util:compare_dates(
@@ -3596,7 +3596,7 @@ select_newest_content(Mult) ->
                    riak_object:get_last_modified(MD1))
          end,
          Mult)),
-    ?LOG_INFO("select_newest_content selected: ~p", [Result]),
+    ?LOG_INFO("riak_kv_vnode:select_newest_content/1 called with Mult ~p selected: ~p", [Mult, Result]),
     Result.
 
 %% @private
