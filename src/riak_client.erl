@@ -61,7 +61,7 @@
 
 -compile({no_auto_import,[put/2]}).
 %% @type default_timeout() = 60000
--define(DEFAULT_TIMEOUT, 6).
+-define(DEFAULT_TIMEOUT, 8).
 -define(DEFAULT_FOLD_TIMEOUT, 3600000).
 
 %% TODO: This type needs to be better specified and validated against
