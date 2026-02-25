@@ -3592,7 +3592,7 @@ select_highest_priority_content(Mult) ->
                 {P0, P1} when P0 > P1 ->
                     1;
                 _ ->
-                    -1;
+                    -1
             end
         end,
         Mult)).
