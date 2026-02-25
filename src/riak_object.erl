@@ -1815,12 +1815,16 @@ get_last_modified(MD) ->
 
 % custom code
 get_user_metadata(MD, Suffix) ->
-    CustomMeta = ?HEAD_USERMETA_PREFIX ++ Suffix,
-    CustomMetaBin = list_to_binary(CustomMeta),
-    ?LOG_INFO("Looking for user metadata with key ~p ~p", [CustomMeta, CustomMetaBin]),
-    case metadata_find(CustomMeta, MD) of
-        error -> dict:new();
-        {ok, UserMD} -> UserMD
+    CustomMetaBin = <<Suffix/binary>>,
+    ?LOG_INFO("Looking for user metadata with key ~p", [CustomMetaBin]),
+    case metadata_find(?MD_USERMETA, MD) of
+        error -> undefined;
+        {ok, UserMD} ->
+            ?LOG_INFO("Found user metadata: ~p", [UserMD]),
+            case lists:keyfind(CustomMetaBin, 1, UserMD) of
+                {_, Value} -> Value;
+                false -> undefined
+            end
     end.
 % end of custom code
 
