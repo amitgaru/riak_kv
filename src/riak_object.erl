@@ -1815,7 +1815,7 @@ get_last_modified(MD) ->
 
 % custom code
 get_user_metadata(MD, Suffix) ->
-    CustomMetaBin = <<Suffix/binary>>,
+    CustomMetaBin = list_to_binary(Suffix),
     ?LOG_INFO("Looking for user metadata with key ~p", [CustomMetaBin]),
     case metadata_find(?MD_USERMETA, MD) of
         error -> undefined;
