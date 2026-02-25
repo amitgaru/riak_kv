@@ -3601,14 +3601,14 @@ select_highest_priority_content(Mult) ->
 
 %% @private
 %% choose the latest content to store for the allow_mult=false case
-select_newest_content(Mult) ->
-    hd(lists:sort(
-         fun({MD0, _}, {MD1, _}) ->
-                 riak_core_util:compare_dates(
-                   riak_object:get_last_modified(MD0),
-                   riak_object:get_last_modified(MD1))
-         end,
-         Mult)).
+% select_newest_content(Mult) ->
+%     hd(lists:sort(
+%          fun({MD0, _}, {MD1, _}) ->
+%                  riak_core_util:compare_dates(
+%                    riak_object:get_last_modified(MD0),
+%                    riak_object:get_last_modified(MD1))
+%          end,
+%          Mult)).
 
 %% @private
 put_merge(false, true, _CurObj, UpdObj, _VId, _StartTime) -> % coord=false, LWW=true
