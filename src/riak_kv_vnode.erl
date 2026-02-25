@@ -3582,8 +3582,8 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
 select_highest_priority_content(Mult) ->
     hd(lists:sort(
         fun({MD0, _}, {MD1, _}) ->
-            MD0Priority = riak_object:get_user_metadata(MD0, "priority"),
-            MD1Priority = riak_object:get_user_metadata(MD1, "priority"),
+            MD0Priority = riak_object:get_user_metadata(MD0, "Priority"),
+            MD1Priority = riak_object:get_user_metadata(MD1, "Priority"),
             ?LOG_INFO("Comparing content with MD0: ~p, MD1: ~p, P0: ~p, P1: ~p ~n", [MD0, MD1, MD0Priority, MD1Priority]),
             case ({MD0Priority, MD1Priority}) of
                 {P0, P1} when P0 == undefined orelse P1 == undefined orelse P0 == P1 ->
@@ -3592,8 +3592,10 @@ select_highest_priority_content(Mult) ->
                         riak_object:get_last_modified(MD0),
                         riak_object:get_last_modified(MD1));
                 {P0, P1} when P0 > P1 ->
+                    ?LOG_INFO("P0 > P1, returning 1")
                     1;
                 _ ->
+                    ?LOG_INFO("P0 < P1, returning -1")
                     -1
             end
         end,
