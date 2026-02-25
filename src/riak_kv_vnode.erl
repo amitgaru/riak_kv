@@ -3585,7 +3585,7 @@ select_highest_priority_content(Mult) ->
             MD0Priority = riak_object:get_user_metadata(MD0, "priority"),
             MD1Priority = riak_object:get_user_metadata(MD1, "priority"),
             case ({MD0Priority, MD1Priority}) of
-                {P0, P1} when P0 == undefined; P1 == undefined; P0 == P1 ->
+                {P0, P1} when P0 == undefined orelse P1 == undefined orelse P0 == P1 ->
                     riak_core_util:compare_dates(
                         riak_object:get_last_modified(MD0),
                         riak_object:get_last_modified(MD1));
