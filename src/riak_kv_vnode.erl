@@ -3591,7 +3591,7 @@ select_highest_priority_content(Mult) ->
                     riak_core_util:compare_dates(
                         riak_object:get_last_modified(MD0),
                         riak_object:get_last_modified(MD1));
-                {P0, P1} when P0 > P1 ->
+                {P0, P1} when list_to_integer(P0) > list_to_integer(P1) ->
                     ?LOG_INFO("P0 > P1, returning 1"),
                     1;
                 _ ->
