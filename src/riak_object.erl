@@ -1815,7 +1815,7 @@ get_last_modified(MD) ->
 
 % custom code
 get_user_metadata(MD, Suffix) ->
-    CustomMeta = io:format("~s-~s", [?MD_USERMETA, Suffix]),
+    CustomMeta = ?MD_USERMETA ++ "-" ++ Suffix,
     ?LOG_INFO("Looking for user metadata with key ~p", [CustomMeta]),
     case metadata_find(CustomMeta, MD) of
         error -> dict:new();
