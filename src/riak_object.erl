@@ -116,7 +116,7 @@
             is_aae_object_deleted/2]).
 -export([set_contents/2, set_vclock/2]). %% INTERNAL, only for riak_*
 -export([is_robject/1, is_head/1]).
--export([update_last_modified/1, update_last_modified/2, get_last_modified/1]).
+-export([update_last_modified/1, update_last_modified/2, get_last_modified/1, get_user_metadata/2]).
 -export([strict_descendant/2, new_actor_epoch/2]).
 -export([find_bestobject/1]).
 -export([spoof_getdeletedobject/1]).
@@ -1811,6 +1811,16 @@ get_last_modified(MD) ->
         {ok, TS} ->
             TS
     end.
+
+
+% custom code
+get_user_metadata(MD, Suffix) ->
+    CustomMeta = io:format("~s~s", [?MD_USERMETA, Suffix]),
+    case metadata_find(CustomMeta, MD) of
+        error -> dict:new();
+        {ok, UserMD} -> UserMD
+    end.
+% end of custom code
 
 %%
 %% Helpers for managing vector clock encoding and related capability:

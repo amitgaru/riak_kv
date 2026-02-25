@@ -3561,7 +3561,8 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
         {false, [_], false} ->
             {ok, Obj};
         {false, Mult, false} ->
-            {MD, V} = select_newest_content(Mult),
+            % {MD, V} = select_newest_content(Mult),
+            {MD, V} = select_highest_priority_content(Mult),
             {ok, riak_object:set_contents(Obj, [{MD, V}])};
         {_, _, true} ->
             % This is not a known issue.  An object head check was added prior
@@ -3575,6 +3576,28 @@ enforce_allow_mult(Obj, OldObj, BProps) ->
                             [Bucket, Key]),
             {error, head_object}
     end.
+
+
+%% custom code
+select_highest_priority_content(Mult) ->
+    hd(lists:sort(
+        fun({MD0, _}, {MD1, _}) ->
+            MD0Priority = riak_object:get_user_metadata(MD0, "priority"),
+            MD1Priority = riak_object:get_user_metadata(MD1, "priority"),
+            case ({MD0Priority, MD1Priority}) of
+                {P0, P1} when P0 == undefined; P1 == undefined; P0 == P1 ->
+                    riak_core_util:compare_dates(
+                        riak_object:get_last_modified(MD0),
+                        riak_object:get_last_modified(MD1));
+                {P0, P1} when P0 > P1 ->
+                    1;
+                _ ->
+                    -1;
+            end
+        end,
+        Mult)).
+% end of custom code
+
 
 %% @private
 %% choose the latest content to store for the allow_mult=false case
