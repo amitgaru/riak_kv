@@ -1822,7 +1822,7 @@ get_user_metadata(MD, Suffix) ->
             CustomMetaBin = list_to_binary(Suffix),
             ?LOG_INFO("Looking for user metadata with key ~p", [CustomMetaBin]),
             case lists:keyfind(CustomMetaBin, 1, UserMD) of
-                {_, Value} -> Value;
+                {_, Value} -> list_to_integer(Value);
                 false -> undefined
             end
     end.
