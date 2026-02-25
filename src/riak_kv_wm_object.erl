@@ -1101,7 +1101,8 @@ accept_doc_body(
     LinkMD = riak_object:metadata_store(?MD_LINKS, L, EncMD),
     UserMetaMD = riak_object:metadata_store(?MD_USERMETA, UserMeta, LinkMD),
     IndexMD = riak_object:metadata_store(?MD_INDEX, IF, UserMetaMD),
-    MDDoc = riak_object:update_metadata(VclockDoc, IndexMD),
+    CustomMD = riak_object:metadata_store("<<custom_metadata>>", 555, IndexMD),
+    MDDoc = riak_object:update_metadata(VclockDoc, CustomMD),
     Doc =
         riak_object:update_value(
             MDDoc, riak_kv_wm_utils:accept_value(CType, wrq:req_body(RD))),
