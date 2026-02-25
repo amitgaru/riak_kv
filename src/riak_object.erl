@@ -1815,7 +1815,7 @@ get_last_modified(MD) ->
 
 % custom code
 get_user_metadata(MD, Suffix) ->
-    CustomMeta = ?HEAD_USERMETA_PREFIX ++ "-" ++ Suffix,
+    CustomMeta = ?HEAD_USERMETA_PREFIX ++ Suffix,
     CustomMetaBin = list_to_binary(CustomMeta),
     ?LOG_INFO("Looking for user metadata with key ~p ~p", [CustomMeta, CustomMetaBin]),
     case metadata_find(CustomMeta, MD) of
