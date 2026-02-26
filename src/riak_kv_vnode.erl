@@ -3584,10 +3584,10 @@ select_highest_priority_content(Mult) ->
         fun({MD0, _}, {MD1, _}) ->
             MD0Priority = riak_object:get_user_metadata(MD0, "Priority"),
             MD1Priority = riak_object:get_user_metadata(MD1, "Priority"),
-            ?LOG_INFO("Comparing content with MD0: ~p, MD1: ~p, P0: ~p, P1: ~p ~n", [MD0, MD1, MD0Priority, MD1Priority]),
+            % ?LOG_INFO("Comparing content with MD0: ~p, MD1: ~p, P0: ~p, P1: ~p ~n", [MD0, MD1, MD0Priority, MD1Priority]),
             case ({MD0Priority, MD1Priority}) of
                 {P0, P1} when P0 == undefined orelse P1 == undefined orelse P0 == P1 ->
-                    ?LOG_INFO("No priority or equal priority for contents, falling back to last modified date P0: ~p, P1: ~p ~n", [P0, P1]),
+                    % ?LOG_INFO("No priority or equal priority for contents, falling back to last modified date P0: ~p, P1: ~p ~n", [P0, P1]),
                     riak_core_util:compare_dates(
                         riak_object:get_last_modified(MD0),
                         riak_object:get_last_modified(MD1)

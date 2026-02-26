@@ -1818,9 +1818,9 @@ get_user_metadata(MD, Suffix) ->
     case metadata_find(?MD_USERMETA, MD) of
         error -> undefined;
         {ok, UserMD} ->
-            ?LOG_INFO("Found user metadata: ~p", [UserMD]),
+            % ?LOG_INFO("Found user metadata: ~p", [UserMD]),
             CustomMetaBin = list_to_binary(Suffix),
-            ?LOG_INFO("Looking for user metadata with key ~p", [CustomMetaBin]),
+            % ?LOG_INFO("Looking for user metadata with key ~p", [CustomMetaBin]),
             case lists:keyfind(CustomMetaBin, 1, UserMD) of
                 {_, Value} -> list_to_integer(Value);
                 false -> undefined
