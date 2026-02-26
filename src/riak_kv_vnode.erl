@@ -3592,7 +3592,7 @@ select_highest_priority_content(Mult) ->
                         riak_object:get_last_modified(MD0),
                         riak_object:get_last_modified(MD1)
                     );
-                _ ->
+                {P0, P1} ->
                     P0 > P1
             end
         end,
