@@ -838,6 +838,7 @@ update_stats({ok, Obj}, #state{options=Options,
     ObjFmt = ?CAP_OBJECT_FORMAT,
     ObjSize = riak_object:approximate_size(ObjFmt, Obj),
     Bucket = riak_object:bucket(Obj),
+    ?LOG_INFO("updating stats at get_fsm with Bucket: ~p, ResponseUSecs: ~p, Stages: ~p, NumSiblings: ~p, ObjSize: ~p, StatTracked: ~p, CRDTMod: ~p", [Bucket, ResponseUSecs, Stages, NumSiblings, ObjSize, StatTracked, CRDTMod]),
     ok = riak_kv_stat:update({get_fsm, Bucket, ResponseUSecs, Stages,
                               NumSiblings, ObjSize, StatTracked, CRDTMod});
 update_stats(_, #state{ bkey = {Bucket, _},
