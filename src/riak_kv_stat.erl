@@ -1070,6 +1070,7 @@ value(V) ->
     V.
 
 do_register_stat(Name, Type) ->
+    ?LOG_INFO("Registering stat ~p of type ~p", [Name, Type]),
     exometer:new(Name, Type).
 
 %% @doc produce the legacy blob of stats for display.
