@@ -262,6 +262,10 @@ start(_Type, _StartArgs) ->
             %% Add routes to webmachine
             [ webmachine_router:add_route(R)
               || R <- lists:reverse(riak_kv_web:dispatch_table()) ],
+
+
+            exometer_report:subscribe(exometer_report_tty, [riak, riak_kv, node_gets, 1000]),
+
             {ok, Pid};
         {error, Reason} ->
             {error, Reason}
