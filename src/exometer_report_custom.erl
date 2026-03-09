@@ -107,7 +107,7 @@ exometer_unsubscribe(_Metric, _DataPoint, _Extra, St) ->
 %% Invoked through the remote_exometer() function to
 %% send out an update.
 exometer_report(Metric, DataPoint, Extra, Value, St) ->
-    ?log(info, "Report metric ~p_~p = ~p~n", [Metric, DataPoint, Value]),
+    ?log(info, "Report Metric: ~p, DataPoint: ~p, Extra: ~p, Value: ~p, St: ~p", [Metric, DataPoint, Extra, Value, St]),
     %% Report the value and setup a new refresh timer.
     % Key = Metric ++ [DataPoint],
     % Type = case exometer_util:report_type(Key, Extra, St#st.type_map) of
