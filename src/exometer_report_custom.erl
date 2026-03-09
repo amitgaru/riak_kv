@@ -42,7 +42,7 @@
 ).
 
 -include_lib("hut/include/hut.hrl").
--include("exometer_core/include/exometer.hrl").
+-include_lib("exometer_core/include/exometer.hrl").
 
 -define(SERVER, ?MODULE).
 %% calendar:datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}}).
