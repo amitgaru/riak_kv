@@ -74,7 +74,7 @@ send_metric(MetricName, Value, Timestamp) ->
                         #{
                             <<"metrics">> => [
                                 #{
-                                    <<"name">> => <<MetricName/binary>>,
+                                    <<"name">> => list_to_binary(MetricName),
                                     <<"sum">> => #{
                                         <<"dataPoints">> => [
                                             #{
@@ -119,7 +119,7 @@ exometer_report(Metric, DataPoint, Extra, Value, St) ->
     %        timestamp(), ":", value(Value), io_lib:format(" (~w)", [Type]), $\n],
     % io:put_chars(lists:flatten(Str)),
     MetricName = string:join([atom_to_list(M) || M <- Metric], "_"),
-    Timestamp = erlang:system_time(millisecond),
+    Timestamp = erlang:system_time(nanosecond),
     send_metric(MetricName, Value, Timestamp),
     {ok, St}.
 
