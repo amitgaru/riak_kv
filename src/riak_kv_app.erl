@@ -268,7 +268,8 @@ start(_Type, _StartArgs) ->
             % exometer_report:subscribe(exometer_report_tty, [riak, riak_kv, node, gets], 'count', 1000),
 
             exometer_report:add_reporter(exometer_report_custom, []),
-            exometer_report:subscribe(exometer_report_custom, [riak, riak_kv, node, gets], 'count', 1000),
+            exometer_report:subscribe(exometer_report_custom, [riak, riak_kv, node, gets], 'count', 250),
+            exometer_report:subscribe(exometer_report_custom, [riak, riak_kv, node, puts], 'count', 250),
 
             {ok, Pid};
         {error, Reason} ->
