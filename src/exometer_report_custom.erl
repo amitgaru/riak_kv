@@ -92,7 +92,7 @@ send_metric(MetricName, Value, Timestamp) ->
                 }
             ]
         }),
-    ?log(info, "Sending metric ~p", [Body]),
+    % ?log(info, "Sending metric ~p", [Body]),
     httpc:request(
         post,
         {
@@ -108,7 +108,7 @@ send_metric(MetricName, Value, Timestamp) ->
 %% Invoked through the remote_exometer() function to
 %% send out an update.
 exometer_report(Metric, DataPoint, Extra, Value, St) ->
-    ?log(info, "Report Metric: ~p, DataPoint: ~p, Extra: ~p, Value: ~p, St: ~p", [Metric, DataPoint, Extra, Value, St]),
+    ?log(debug, "Report Metric: ~p, DataPoint: ~p, Extra: ~p, Value: ~p, St: ~p", [Metric, DataPoint, Extra, Value, St]),
     %% Report the value and setup a new refresh timer.
     % Key = Metric ++ [DataPoint],
     % Type = case exometer_util:report_type(Key, Extra, St#st.type_map) of
