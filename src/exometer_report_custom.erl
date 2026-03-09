@@ -22,7 +22,7 @@
 %%
 %% Please note that exometer_report_collectd is still also a
 %% exometer_report implementation.
--module(exometer_report_tty).
+-module(exometer_report_custom).
 
 -behaviour(exometer_report).
 
