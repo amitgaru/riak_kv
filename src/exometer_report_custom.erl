@@ -42,7 +42,7 @@
 ).
 
 -include_lib("hut/include/hut.hrl").
--include("exometer.hrl").
+-include("exometer_core/include/exometer.hrl").
 
 -define(SERVER, ?MODULE).
 %% calendar:datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}}).
@@ -147,36 +147,36 @@ exometer_terminate(_, _) ->
 %%% Internal functions
 %%%===================================================================
 
-%% Add metric and datapoint within metric
-name(Metric, Datapoint) when is_integer(Datapoint) ->
-    metric_to_string(Metric) ++ "_" ++ integer_to_list(Datapoint);
-name(Metric, DataPoint) ->
-    metric_to_string(Metric) ++ "_" ++ atom_to_list(DataPoint).
+% %% Add metric and datapoint within metric
+% name(Metric, Datapoint) when is_integer(Datapoint) ->
+%     metric_to_string(Metric) ++ "_" ++ integer_to_list(Datapoint);
+% name(Metric, DataPoint) ->
+%     metric_to_string(Metric) ++ "_" ++ atom_to_list(DataPoint).
 
-metric_to_string([Final]) ->
-    metric_elem_to_list(Final);
-metric_to_string([H | T]) ->
-    metric_elem_to_list(H) ++ "_" ++ metric_to_string(T).
+% metric_to_string([Final]) ->
+%     metric_elem_to_list(Final);
+% metric_to_string([H | T]) ->
+%     metric_elem_to_list(H) ++ "_" ++ metric_to_string(T).
 
-metric_elem_to_list(E) when is_atom(E) ->
-    atom_to_list(E);
-metric_elem_to_list(E) when is_list(E) ->
-    E;
-metric_elem_to_list(E) when is_binary(E) ->
-    [E];
-metric_elem_to_list(E) when is_integer(E) ->
-    integer_to_list(E).
+% metric_elem_to_list(E) when is_atom(E) ->
+%     atom_to_list(E);
+% metric_elem_to_list(E) when is_list(E) ->
+%     E;
+% metric_elem_to_list(E) when is_binary(E) ->
+%     [E];
+% metric_elem_to_list(E) when is_integer(E) ->
+%     integer_to_list(E).
 
 %% Add value, int or float, converted to list
-value(V) when is_integer(V) -> integer_to_list(V);
-value(V) when is_float(V) -> io_lib:format("~f", [V]);
-value(_) -> "0".
+% value(V) when is_integer(V) -> integer_to_list(V);
+% value(V) when is_float(V) -> io_lib:format("~f", [V]);
+% value(_) -> "0".
 
-timestamp() ->
-    integer_to_list(unix_time()).
+% timestamp() ->
+%     integer_to_list(unix_time()).
 
-unix_time() ->
-    datetime_to_unix_time(erlang:universaltime()).
+% unix_time() ->
+%     datetime_to_unix_time(erlang:universaltime()).
 
-datetime_to_unix_time({{_, _, _}, {_, _, _}} = DateTime) ->
-    calendar:datetime_to_gregorian_seconds(DateTime) - ?UNIX_EPOCH.
+% datetime_to_unix_time({{_, _, _}, {_, _, _}} = DateTime) ->
+%     calendar:datetime_to_gregorian_seconds(DateTime) - ?UNIX_EPOCH.
