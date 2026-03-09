@@ -264,7 +264,11 @@ start(_Type, _StartArgs) ->
               || R <- lists:reverse(riak_kv_web:dispatch_table()) ],
 
 
-            exometer_report:subscribe(exometer_report_tty, [riak, riak_kv, node, gets], 'count', 1000),
+            % exometer_report:add_reporter(exometer_report_tty, []),
+            % exometer_report:subscribe(exometer_report_tty, [riak, riak_kv, node, gets], 'count', 1000),
+
+            exometer_report:add_reporter(exometer_report_custom, []),
+            exometer_report:subscribe(exometer_report_custom, [riak, riak_kv, node, gets], 'count', 1000),
 
             {ok, Pid};
         {error, Reason} ->
