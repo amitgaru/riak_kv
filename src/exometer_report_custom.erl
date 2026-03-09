@@ -65,44 +65,45 @@ exometer_subscribe(_Metric, _DataPoint, _Interval, _Extra, St) ->
 exometer_unsubscribe(_Metric, _DataPoint, _Extra, St) ->
     {ok, St}.
 
-% send_metric(MetricName, Datapoint, Value, Timestamp) ->
-%     Body =
-%         jsx:encode(#{
-%             <<"resourceMetrics">> => [
-%                 #{
-%                     <<"scopeMetrics">> => [
-%                         #{
-%                             <<"metrics">> => [
-%                                 #{
-%                                     <<"name">> => <<MetricName/binary>>,
-%                                     <<"sum">> => #{
-%                                         <<"dataPoints">> => [
-%                                             #{
-%                                                 <<"asInt">> => Value,
-%                                                 <<"timeUnixNano">> => Timestamp
-%                                             }
-%                                         ],
-%                                         <<"aggregationTemporality">> => 2,
-%                                         <<"isMonotonic">> => true
-%                                     }
-%                                 }
-%                             ]
-%                         }
-%                     ]
-%                 }
-%             ]
-%         }),
-%     httpc:request(
-%         post,
-%         {
-%             "http://localhost:4318/v1/metrics",
-%             [],
-%             "application/json",
-%             Body
-%         },
-%         [],
-%         []
-%     ).
+send_metric(MetricName, Datapoint, Value, Timestamp) ->
+    Body =
+        jsx:encode(#{
+            <<"resourceMetrics">> => [
+                #{
+                    <<"scopeMetrics">> => [
+                        #{
+                            <<"metrics">> => [
+                                #{
+                                    <<"name">> => <<MetricName/binary>>,
+                                    <<"sum">> => #{
+                                        <<"dataPoints">> => [
+                                            #{
+                                                <<"asInt">> => Value,
+                                                <<"timeUnixNano">> => Timestamp
+                                            }
+                                        ],
+                                        <<"aggregationTemporality">> => 2,
+                                        <<"isMonotonic">> => true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }),
+    ?log(info, "Sending metric ~p", [Body]),
+    httpc:request(
+        post,
+        {
+            "http://localhost:4318/v1/metrics",
+            [],
+            "application/json",
+            Body
+        },
+        [],
+        []
+    ).
 
 %% Invoked through the remote_exometer() function to
 %% send out an update.
@@ -119,7 +120,7 @@ exometer_report(Metric, DataPoint, Extra, Value, St) ->
     % io:put_chars(lists:flatten(Str)),
     % MetricName = string:join([atom_to_list(M) || M <- Metric], "_"),
     % Timestamp = erlang:system_time(millisecond),
-    % send_metric(MetricName, DataPoint, Value, Timestamp),
+    send_metric(MetricName, DataPoint, Value, Timestamp),
     {ok, St}.
 
 exometer_call(Unknown, From, St) ->
