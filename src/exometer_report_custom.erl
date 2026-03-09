@@ -65,44 +65,44 @@ exometer_subscribe(_Metric, _DataPoint, _Interval, _Extra, St) ->
 exometer_unsubscribe(_Metric, _DataPoint, _Extra, St) ->
     {ok, St}.
 
-send_metric(MetricName, Datapoint, Value, Timestamp) ->
-    Body =
-        jsx:encode(#{
-            <<"resourceMetrics">> => [
-                #{
-                    <<"scopeMetrics">> => [
-                        #{
-                            <<"metrics">> => [
-                                #{
-                                    <<"name">> => <<MetricName/binary>>,
-                                    <<"sum">> => #{
-                                        <<"dataPoints">> => [
-                                            #{
-                                                <<"asInt">> => Value,
-                                                <<"timeUnixNano">> => Timestamp
-                                            }
-                                        ],
-                                        <<"aggregationTemporality">> => 2,
-                                        <<"isMonotonic">> => true
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }),
-    httpc:request(
-        post,
-        {
-            "http://localhost:4318/v1/metrics",
-            [],
-            "application/json",
-            Body
-        },
-        [],
-        []
-    ).
+% send_metric(MetricName, Datapoint, Value, Timestamp) ->
+%     Body =
+%         jsx:encode(#{
+%             <<"resourceMetrics">> => [
+%                 #{
+%                     <<"scopeMetrics">> => [
+%                         #{
+%                             <<"metrics">> => [
+%                                 #{
+%                                     <<"name">> => <<MetricName/binary>>,
+%                                     <<"sum">> => #{
+%                                         <<"dataPoints">> => [
+%                                             #{
+%                                                 <<"asInt">> => Value,
+%                                                 <<"timeUnixNano">> => Timestamp
+%                                             }
+%                                         ],
+%                                         <<"aggregationTemporality">> => 2,
+%                                         <<"isMonotonic">> => true
+%                                     }
+%                                 }
+%                             ]
+%                         }
+%                     ]
+%                 }
+%             ]
+%         }),
+%     httpc:request(
+%         post,
+%         {
+%             "http://localhost:4318/v1/metrics",
+%             [],
+%             "application/json",
+%             Body
+%         },
+%         [],
+%         []
+%     ).
 
 %% Invoked through the remote_exometer() function to
 %% send out an update.
