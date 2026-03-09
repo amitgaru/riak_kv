@@ -65,7 +65,7 @@ exometer_subscribe(_Metric, _DataPoint, _Interval, _Extra, St) ->
 exometer_unsubscribe(_Metric, _DataPoint, _Extra, St) ->
     {ok, St}.
 
-send_metric(MetricName, Datapoint, Value, Timestamp) ->
+send_metric(MetricName, Value, Timestamp) ->
     Body =
         jsx:encode(#{
             <<"resourceMetrics">> => [
@@ -118,9 +118,9 @@ exometer_report(Metric, DataPoint, Extra, Value, St) ->
     % Str = [?MODULE_STRING, ": ", name(Metric, DataPoint), $\s,
     %        timestamp(), ":", value(Value), io_lib:format(" (~w)", [Type]), $\n],
     % io:put_chars(lists:flatten(Str)),
-    % MetricName = string:join([atom_to_list(M) || M <- Metric], "_"),
-    % Timestamp = erlang:system_time(millisecond),
-    send_metric(MetricName, DataPoint, Value, Timestamp),
+    MetricName = string:join([atom_to_list(M) || M <- Metric], "_"),
+    Timestamp = erlang:system_time(millisecond),
+    send_metric(MetricName, Value, Timestamp),
     {ok, St}.
 
 exometer_call(Unknown, From, St) ->
