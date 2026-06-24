@@ -1235,7 +1235,7 @@ recv_timeout(Options) ->
         undefined ->
             %% If no reply timeout given, use the FSM timeout + 100ms to give it a chance
             %% to respond.
-            proplists:get_value(timeout, Options, ?DEFAULT_TIMEOUT) + 100;
+            proplists:get_value(timeout, Options, ?DEFAULT_TIMEOUT);
         Timeout ->
             %% Otherwise use the directly supplied timeout.
             Timeout
